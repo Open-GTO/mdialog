@@ -77,7 +77,7 @@ stock Dialog_Close(playerid)
 
 stock Dialog_IsOpen(playerid)
 {
-	return gIsDialogOpen{playerid};
+	return _:gIsDialogOpen{playerid};
 }
 
 /*
