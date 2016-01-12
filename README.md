@@ -4,17 +4,17 @@ Modern dialog system
 # Functions
 ```Pawn
 // open dialog
-Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
+Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[]);
 // close dialog
-Dialog_Close(playerid)
+Dialog_Close(playerid);
 // check on openning dialog
 Dialog_IsOpen(playerid);
 // show dialog by name
-Dialog_Show(playerid, function[])
+Dialog_Show(playerid, function[]);
 // show message dialog
-Dialog_Message(playerid, caption[], info[], button1[])
+Dialog_Message(playerid, caption[], info[], button1[]);
 // show message dialog with custop response callback
-Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[])
+Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[]);
 ```
 
 # Usage
