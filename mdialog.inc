@@ -5,14 +5,18 @@
 
 */
 
-#if defined _core_dialog_included
+#if defined _mdialog_included
 	#endinput
 #endif
 
-#define _core_dialog_included
-#pragma library core_dialog
+#define _mdialog_included
+#pragma library mdialog
 
+/*
+	Defines
+*/
 
+// external defines
 #define DialogCreate:%0(%1) \
 	forward dcr_%0(%1); \
 	public dcr_%0(%1)
@@ -23,37 +27,75 @@
 
 #define Dialog: #
 
+// internal defines
+#define MDIALOG_DIALOG_ID 32700
+
+#if !defined MAX_FUNCTION_NAME
+	#define MAX_FUNCTION_NAME 32
+#endif
+
+#if !defined MAX_DIALOG_RESPONSE_INPUT
+	#define MAX_DIALOG_RESPONSE_INPUT 128
+#endif
+
+/*
+	Vars
+*/
+
+static
+	bool:gIsDialogOpen[MAX_PLAYERS char],
+	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME - 4];
+
+/*
+	Dialog_Open
+*/
+
+stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
+{
+	gIsDialogOpen{playerid} = true;
+	strmid(gDialogFunction[playerid], function, 0, strlen(function), sizeof(gDialogFunction[]));
+
+	ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+}
+
+/*
+	Dialog_Close
+*/
 
 stock Dialog_Close(playerid)
 {
-	DeletePVar(playerid, "Dialog_IsOpen");
-	DeletePVar(playerid, "Dialog_Function");
+	gIsDialogOpen{playerid} = false;
+	gDialogFunction[playerid][0] = '\0';
 
 	ShowPlayerDialog(playerid, -1, DIALOG_STYLE_MSGBOX, " ", " ", " ", "");
 	return 0;
 }
 
+/*
+	Dialog_IsOpen
+*/
+
 stock Dialog_IsOpen(playerid)
 {
-	return GetPVarInt(playerid, "Dialog_IsOpen") == 1 ? 1 : 0;
+	return gIsDialogOpen{playerid};
 }
 
-stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
-{
-	SetPVarInt(playerid, "Dialog_IsOpen", 1);
-	SetPVarString(playerid, "Dialog_Function", function);
-
-	ShowPlayerDialog(playerid, 32700, style, caption, info, button1, button2);
-}
+/*
+	Dialog_Show
+*/
 
 stock Dialog_Show(playerid, function[])
 {
-	new call_func[40];
+	new call_func[MAX_FUNCTION_NAME];
 	strcat(call_func, "dcr_");
 	strcat(call_func, function);
 
 	CallLocalFunction(call_func, "d", playerid);
 }
+
+/*
+	Dialog_Message
+*/
 
 stock Dialog_Message(playerid, caption[], info[], button1[])
 {
@@ -61,50 +103,64 @@ stock Dialog_Message(playerid, caption[], info[], button1[])
 	return 1;
 }
 
+/*
+	Dialog_MessageEx
+*/
+
 stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[])
 {
 	Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
 	return 1;
 }
 
+/*
+	OnDialogResponse
+*/
+
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
-	new input[128];
+	if (dialogid == MDIALOG_DIALOG_ID) {
+		new input[MAX_DIALOG_RESPONSE_INPUT];
 
-	strcat(input, inputtext);
+		strcat(input, inputtext);
 
-	if (input[0] == '\0') {
-		input[0] = '\1';
-	} else {
-		for (new i = 0, len = strlen(input); i != len; i++) {
-			if (input[i] == '%') {
-				input[i] = '#';
+		if (input[0] == '\0') {
+			input[0] = '\1';
+		} else {
+			for (new i = strlen(input) - 1; i != -1; i--) {
+				if (input[i] == '%') {
+					input[i] = '#';
+				}
 			}
 		}
-	}
 
-	if (dialogid == 32700 && Dialog_IsOpen(playerid)) {
-		new call_func[40];
-		strcat(call_func, "dre_");
+		if (Dialog_IsOpen(playerid)) {
+			new call_func[MAX_FUNCTION_NAME];
 
-		new function[32];
-		GetPVarString(playerid, "Dialog_Function", function, sizeof(function));
-
-		strcat(call_func, function);
-		
-		if (funcidx(call_func) != -1) {
-			CallLocalFunction(call_func, "ddds", playerid, response, listitem, input);
+			strcat(call_func, "dre_");
+			strcat(call_func, gDialogFunction[playerid]);
+			
+			if (funcidx(call_func) != -1) {
+				return CallLocalFunction(call_func, "ddds", playerid, response, listitem, input);
+			}
 		}
-	}
-	
-	CallLocalFunction("GTODIALOG_OnDialogResponse", "iiiis", playerid, dialogid, response, listitem, input);
-	return 0;
-}
 
+		return 0;
+	}
+
+	#if defined MDIALOG_OnDialogResponse
+		return MDIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+	#else
+		return 0;
+	#endif
+}
 #if defined _ALS_OnDialogResponse
 	#undef OnDialogResponse
 #else
 	#define _ALS_OnDialogResponse
 #endif
-#define OnDialogResponse GTODIALOG_OnDialogResponse
-forward OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
+ 
+#define OnDialogResponse MDIALOG_OnDialogResponse
+#if defined MDIALOG_OnDialogResponse
+	forward MDIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
+#endif
