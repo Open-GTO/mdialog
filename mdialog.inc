@@ -10,7 +10,6 @@
 #endif
 
 #define _mdialog_included
-#pragma library mdialog
 
 /*
 	Defines
@@ -139,7 +138,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 			strcat(call_func, "dre_");
 			strcat(call_func, gDialogFunction[playerid]);
-			
+
 			if (funcidx(call_func) != -1) {
 				return CallLocalFunction(call_func, "ddds", playerid, response, listitem, input);
 			}
@@ -159,7 +158,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 #else
 	#define _ALS_OnDialogResponse
 #endif
- 
+
 #define OnDialogResponse MDIALOG_OnDialogResponse
 #if defined MDIALOG_OnDialogResponse
 	forward MDIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
