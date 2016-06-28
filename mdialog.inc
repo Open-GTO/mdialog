@@ -85,8 +85,7 @@ stock Dialog_IsOpen(playerid)
 
 stock Dialog_Show(playerid, function[])
 {
-	new call_func[MAX_FUNCTION_NAME];
-	strcat(call_func, "dcr_");
+	new call_func[MAX_FUNCTION_NAME] = "dcr_";
 	strcat(call_func, function);
 
 	CallLocalFunction(call_func, "d", playerid);
