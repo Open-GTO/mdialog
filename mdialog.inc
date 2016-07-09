@@ -27,7 +27,9 @@
 #define Dialog: #
 
 // internal defines
-#define MDIALOG_DIALOG_ID 32700
+#if !defined MDIALOG_DIALOG_ID
+	#define MDIALOG_DIALOG_ID 32700
+#endif
 
 #if !defined MAX_FUNCTION_NAME
 	#define MAX_FUNCTION_NAME 32
@@ -54,7 +56,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 	gIsDialogOpen{playerid} = true;
 	strmid(gDialogFunction[playerid], function, 0, strlen(function), sizeof(gDialogFunction[]));
 
-	ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
 }
 
 /*
@@ -65,9 +67,7 @@ stock Dialog_Close(playerid)
 {
 	gIsDialogOpen{playerid} = false;
 	gDialogFunction[playerid][0] = '\0';
-
-	ShowPlayerDialog(playerid, -1, DIALOG_STYLE_MSGBOX, " ", " ", " ", "");
-	return 0;
+	return ShowPlayerDialog(playerid, -1, DIALOG_STYLE_MSGBOX, " ", " ", " ", "");
 }
 
 /*
@@ -88,7 +88,7 @@ stock Dialog_Show(playerid, function[])
 	new call_func[MAX_FUNCTION_NAME] = "dcr_";
 	strcat(call_func, function);
 
-	CallLocalFunction(call_func, "d", playerid);
+	return CallLocalFunction(call_func, "d", playerid);
 }
 
 /*
@@ -97,8 +97,7 @@ stock Dialog_Show(playerid, function[])
 
 stock Dialog_Message(playerid, caption[], info[], button1[])
 {
-	Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
-	return 1;
+	return Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
 }
 
 /*
@@ -107,8 +106,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[])
 
 stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[])
 {
-	Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
-	return 1;
+	return Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
 }
 
 /*
@@ -119,7 +117,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == MDIALOG_DIALOG_ID) {
 		new input[MAX_DIALOG_RESPONSE_INPUT];
-
 		strcat(input, inputtext);
 
 		if (input[0] == '\0') {
@@ -133,16 +130,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		}
 
 		if (Dialog_IsOpen(playerid)) {
-			new call_func[MAX_FUNCTION_NAME];
-
-			strcat(call_func, "dre_");
+			new call_func[MAX_FUNCTION_NAME] = "dre_";
 			strcat(call_func, gDialogFunction[playerid]);
 
 			if (funcidx(call_func) != -1) {
 				return CallLocalFunction(call_func, "ddds", playerid, response, listitem, input);
 			}
 		}
-
 		return 0;
 	}
 
