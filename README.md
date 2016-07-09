@@ -1,5 +1,5 @@
 # mdialog
-Modern dialog system
+Modern dialog system.
 
 # Functions
 ```Pawn
@@ -13,7 +13,7 @@ Dialog_IsOpen(playerid);
 Dialog_Show(playerid, function[]);
 // show message dialog
 Dialog_Message(playerid, caption[], info[], button1[]);
-// show message dialog with custop response callback
+// show message dialog with custom response callback
 Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[]);
 ```
 
