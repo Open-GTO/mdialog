@@ -35,17 +35,13 @@
 	#define MAX_FUNCTION_NAME 32
 #endif
 
-#if !defined MAX_DIALOG_RESPONSE_INPUT
-	#define MAX_DIALOG_RESPONSE_INPUT 128
-#endif
-
 /*
 	Vars
 */
 
 static
 	bool:gIsDialogOpen[MAX_PLAYERS char],
-	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME - 4];
+	gDialogFunction[MAX_PLAYERS][(MAX_FUNCTION_NAME - 4) char];
 
 /*
 	Dialog_Open
@@ -54,8 +50,8 @@ static
 stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
 {
 	gIsDialogOpen{playerid} = true;
-	strmid(gDialogFunction[playerid], function, 0, strlen(function), sizeof(gDialogFunction[]));
-
+	gDialogFunction[playerid] = !"dre_";
+	strcat(gDialogFunction[playerid], function, sizeof(gDialogFunction[]));
 	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
 }
 
@@ -85,9 +81,8 @@ stock Dialog_IsOpen(playerid)
 
 stock Dialog_Show(playerid, function[])
 {
-	new call_func[MAX_FUNCTION_NAME] = "dcr_";
+	new call_func[MAX_FUNCTION_NAME char] = !"dcr_";
 	strcat(call_func, function);
-
 	return CallLocalFunction(call_func, "d", playerid);
 }
 
@@ -116,26 +111,18 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == MDIALOG_DIALOG_ID) {
-		new input[MAX_DIALOG_RESPONSE_INPUT];
-		strcat(input, inputtext);
-
-		if (input[0] == '\0') {
-			input[0] = '\1';
+		if (inputtext[0] == '\0') {
+			inputtext[0] = '\1';
 		} else {
-			for (new i = strlen(input) - 1; i != -1; i--) {
-				if (input[i] == '%') {
-					input[i] = '#';
+			for (new i = strlen(inputtext) - 1; i != -1; i--) {
+				if (inputtext[i] == '%') {
+					inputtext[i] = '#';
 				}
 			}
 		}
 
 		if (Dialog_IsOpen(playerid)) {
-			new call_func[MAX_FUNCTION_NAME] = "dre_";
-			strcat(call_func, gDialogFunction[playerid]);
-
-			if (funcidx(call_func) != -1) {
-				return CallLocalFunction(call_func, "ddds", playerid, response, listitem, input);
-			}
+			return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, inputtext);
 		}
 		return 0;
 	}
