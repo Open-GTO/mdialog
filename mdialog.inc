@@ -47,14 +47,18 @@ static
 	Dialog_Open
 */
 
-#if defined MDIALOG_ZLANG_MODE
-
-stock Dialog_Open(playerid, function[], style, var_caption[], var_info[], var_button1[], var_button2[], va_args<>)
+static stock _Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
 {
 	gIsDialogOpen{playerid} = true;
 	gDialogFunction[playerid] = !"dre_";
 	strcat(gDialogFunction[playerid], function, sizeof(gDialogFunction[]));
+	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+}
 
+#if defined MDIALOG_ZLANG_MODE
+
+stock Dialog_Open(playerid, function[], style, var_caption[], var_info[], var_button1[], var_button2[], va_args<>)
+{
 	static
 		Lang:lang,
 		caption[MAX_LANG_VALUE_STRING],
@@ -70,19 +74,32 @@ stock Dialog_Open(playerid, function[], style, var_caption[], var_info[], var_bu
 	Lang_GetText(lang, var_info, info);
 	va_format(info, sizeof(info), info, va_start<7>);
 
-	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+	return _Dialog_Open(playerid, function, style, caption, info, button1, button2);
 }
 
-#define Dialog_Open(%0$%1) Dialog_Open(%0#%1)
+stock Dialog_Open2(playerid, function[], style, var_caption[], info[], var_button1[], var_button2[], va_args<>)
+{
+	static
+		Lang:lang,
+		caption[MAX_LANG_VALUE_STRING],
+		button1[MAX_LANG_VALUE_STRING],
+		button2[MAX_LANG_VALUE_STRING];
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	Lang_GetText(lang, var_caption, caption);
+	Lang_GetText(lang, var_button1, button1);
+	Lang_GetText(lang, var_button2, button2);
+	va_format(info, strlen(info), info, va_start<7>);
+
+	return _Dialog_Open(playerid, function, style, caption, info, button1, button2);
+}
 
 #else
 
 stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
 {
-	gIsDialogOpen{playerid} = true;
-	gDialogFunction[playerid] = !"dre_";
-	strcat(gDialogFunction[playerid], function, sizeof(gDialogFunction[]));
-	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+	return _Dialog_Open(playerid, function, style, caption, info, button1, button2);
 }
 
 #endif
@@ -121,19 +138,103 @@ stock Dialog_Show(playerid, function[])
 	Dialog_Message
 */
 
+#if defined MDIALOG_ZLANG_MODE
+
+stock Dialog_Message(playerid, var_caption[], var_info[], var_button1[], va_args<>)
+{
+	static
+		Lang:lang,
+		caption[MAX_LANG_VALUE_STRING],
+		button1[MAX_LANG_VALUE_STRING],
+		info[MAX_LANG_VALUE_STRING];
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	Lang_GetText(lang, var_caption, caption);
+	Lang_GetText(lang, var_button1, button1);
+	Lang_GetText(lang, var_info, info);
+	va_format(info, sizeof(info), info, va_start<4>);
+
+	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
+}
+
+stock Dialog_Message2(playerid, var_caption[], info[], var_button1[], va_args<>)
+{
+	static
+		Lang:lang,
+		caption[MAX_LANG_VALUE_STRING],
+		button1[MAX_LANG_VALUE_STRING];
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	Lang_GetText(lang, var_caption, caption);
+	Lang_GetText(lang, var_button1, button1);
+	va_format(info, strlen(info), info, va_start<4>);
+
+	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
+}
+
+#else
+
 stock Dialog_Message(playerid, caption[], info[], button1[])
 {
-	return Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
+	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
 }
+
+#endif
 
 /*
 	Dialog_MessageEx
 */
 
+#if defined MDIALOG_ZLANG_MODE
+
+stock Dialog_MessageEx(playerid, response[], var_caption[], var_info[], var_button1[], var_button2[], va_args<>)
+{
+	static
+		Lang:lang,
+		caption[MAX_LANG_VALUE_STRING],
+		button1[MAX_LANG_VALUE_STRING],
+		button2[MAX_LANG_VALUE_STRING],
+		info[MAX_LANG_VALUE_STRING];
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	Lang_GetText(lang, var_caption, caption);
+	Lang_GetText(lang, var_button1, button1);
+	Lang_GetText(lang, var_button2, button2);
+	Lang_GetText(lang, var_info, info);
+	va_format(info, sizeof(info), info, va_start<6>);
+
+	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
+}
+
+stock Dialog_MessageEx2(playerid, response[], var_caption[], info[], var_button1[], var_button2[], va_args<>)
+{
+	static
+		Lang:lang,
+		caption[MAX_LANG_VALUE_STRING],
+		button1[MAX_LANG_VALUE_STRING],
+		button2[MAX_LANG_VALUE_STRING];
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	Lang_GetText(lang, var_caption, caption);
+	Lang_GetText(lang, var_button1, button1);
+	Lang_GetText(lang, var_button2, button2);
+	va_format(info, strlen(info), info, va_start<6>);
+
+	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
+}
+
+#else
+
 stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[])
 {
-	return Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
+	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
 }
+
+#endif
 
 /*
 	OnDialogResponse
