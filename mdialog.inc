@@ -47,6 +47,36 @@ static
 	Dialog_Open
 */
 
+#if defined MDIALOG_ZLANG_MODE
+
+stock Dialog_Open(playerid, function[], style, var_caption[], var_info[], var_button1[], var_button2[], va_args<>)
+{
+	gIsDialogOpen{playerid} = true;
+	gDialogFunction[playerid] = !"dre_";
+	strcat(gDialogFunction[playerid], function, sizeof(gDialogFunction[]));
+
+	static
+		Lang:lang,
+		caption[MAX_LANG_VALUE_STRING],
+		button1[MAX_LANG_VALUE_STRING],
+		button2[MAX_LANG_VALUE_STRING],
+		info[MAX_LANG_VALUE_STRING];
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	Lang_GetText(lang, var_caption, caption);
+	Lang_GetText(lang, var_button1, button1);
+	Lang_GetText(lang, var_button2, button2);
+	Lang_GetText(lang, var_info, info);
+	va_format(info, sizeof(info), info, va_start<7>);
+
+	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+}
+
+#define Dialog_Open(%0$%1) Dialog_Open(%0#%1)
+
+#else
+
 stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
 {
 	gIsDialogOpen{playerid} = true;
@@ -55,6 +85,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
 }
 
+#endif
 /*
 	Dialog_Close
 */
