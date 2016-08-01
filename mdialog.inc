@@ -77,7 +77,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 		temp_caption[MAX_LANG_VALUE_STRING],
 		temp_button1[MAX_LANG_VALUE_STRING],
 		temp_button2[MAX_LANG_VALUE_STRING],
-		temp_info[MAX_LANG_VALUE_STRING];
+		temp_info[MAX_LANG_MVALUE_STRING];
 
 	lang = Lang_GetPlayerLang(playerid);
 
@@ -99,14 +99,17 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 		strcat(temp_button1, button1);
 	}
 
-	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
-		Lang_GetText(lang, button2, temp_button2);
-	} else {
-		strcat(temp_button2, button2);
+	if (!isnull(button2)) {
+		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
+			Lang_GetText(lang, button2, temp_button2);
+		} else {
+			strcat(temp_button2, button2);
+		}
 	}
 
-	va_format(info, strlen(info), info, va_start<8>);
-
+	if (numargs() > 8) {
+		va_format(temp_info, sizeof(temp_info), temp_info, va_start<8>);
+	}
 	return _Dialog_Open(playerid, function, style, temp_caption, temp_info, temp_button1, temp_button2);
 }
 
@@ -161,7 +164,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 		Lang:lang,
 		temp_caption[MAX_LANG_VALUE_STRING],
 		temp_button1[MAX_LANG_VALUE_STRING],
-		temp_info[MAX_LANG_VALUE_STRING];
+		temp_info[MAX_LANG_MVALUE_STRING];
 
 	lang = Lang_GetPlayerLang(playerid);
 
@@ -183,9 +186,10 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 		strcat(temp_button1, button1);
 	}
 
-	va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
-
-	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
+	if (numargs() > 5) {
+		va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
+	}
+	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, button1, "");
 }
 
 #else
@@ -210,7 +214,7 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 		temp_caption[MAX_LANG_VALUE_STRING],
 		temp_button1[MAX_LANG_VALUE_STRING],
 		temp_button2[MAX_LANG_VALUE_STRING],
-		temp_info[MAX_LANG_VALUE_STRING];
+		temp_info[MAX_LANG_MVALUE_STRING];
 
 	lang = Lang_GetPlayerLang(playerid);
 
@@ -232,14 +236,17 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 		strcat(temp_button1, button1);
 	}
 
-	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
-		Lang_GetText(lang, button2, temp_button2);
-	} else {
-		strcat(temp_button2, button2);
+	if (!isnull(button2)) {
+		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
+			Lang_GetText(lang, button2, temp_button2);
+		} else {
+			strcat(temp_button2, button2);
+		}
 	}
 
-	va_format(temp_info, sizeof(temp_info), temp_info, va_start<7>);
-
+	if (numargs() > 5) {
+		va_format(temp_info, sizeof(temp_info), temp_info, va_start<7>);
+	}
 	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, temp_button2);
 }
 
