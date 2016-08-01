@@ -84,26 +84,26 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
 		Lang_GetText(lang, caption, temp_caption);
 	} else {
-		strcat(temp_caption, caption);
+		_MDIALOG_strcpy(temp_caption, caption);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
 		Lang_GetText(lang, info, temp_info);
 	} else {
-		strcat(temp_info, info);
+		_MDIALOG_strcpy(temp_info, info);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
 		Lang_GetText(lang, button1, temp_button1);
 	} else {
-		strcat(temp_button1, button1);
+		_MDIALOG_strcpy(temp_button1, button1);
 	}
 
 	if (!isnull(button2)) {
 		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
 			Lang_GetText(lang, button2, temp_button2);
 		} else {
-			strcat(temp_button2, button2);
+			_MDIALOG_strcpy(temp_button2, button2);
 		}
 	}
 
@@ -171,19 +171,19 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
 		Lang_GetText(lang, caption, temp_caption);
 	} else {
-		strcat(temp_caption, caption);
+		_MDIALOG_strcpy(temp_caption, caption);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
 		Lang_GetText(lang, info, temp_info);
 	} else {
-		strcat(temp_info, info);
+		_MDIALOG_strcpy(temp_info, info);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
 		Lang_GetText(lang, button1, temp_button1);
 	} else {
-		strcat(temp_button1, button1);
+		_MDIALOG_strcpy(temp_button1, button1);
 	}
 
 	if (numargs() > 5) {
@@ -221,26 +221,26 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
 		Lang_GetText(lang, caption, temp_caption);
 	} else {
-		strcat(temp_caption, caption);
+		_MDIALOG_strcpy(temp_caption, caption);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
 		Lang_GetText(lang, info, temp_info);
 	} else {
-		strcat(temp_info, info);
+		_MDIALOG_strcpy(temp_info, info);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
 		Lang_GetText(lang, button1, temp_button1);
 	} else {
-		strcat(temp_button1, button1);
+		_MDIALOG_strcpy(temp_button1, button1);
 	}
 
 	if (!isnull(button2)) {
 		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
 			Lang_GetText(lang, button2, temp_button2);
 		} else {
-			strcat(temp_button2, button2);
+			_MDIALOG_strcpy(temp_button2, button2);
 		}
 	}
 
@@ -298,3 +298,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 #if defined MDIALOG_OnDialogResponse
 	forward MDIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
 #endif
+
+/*
+	Other functions
+*/
+
+static stock _MDIALOG_strcpy(result[], source[], const size = sizeof(result))
+{
+	result[0] = 0;
+	return strcat(result, source, size);
+}
