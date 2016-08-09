@@ -189,7 +189,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 	if (numargs() > 5) {
 		va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
 	}
-	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, button1, "");
+	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, "");
 }
 
 #else
