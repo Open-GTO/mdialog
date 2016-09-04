@@ -266,13 +266,17 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == MDIALOG_DIALOG_ID) {
+		
 		if (inputtext[0] == '\0') {
-			inputtext[0] = '\1';
-		} else {
-			for (new i = strlen(inputtext) - 1; i != -1; i--) {
-				if (inputtext[i] == '%') {
-					inputtext[i] = '#';
-				}
+			if (Dialog_IsOpen(playerid)) {
+				return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, "\1");
+			}
+			return 0;
+		} 
+
+		for (new i = strlen(inputtext) - 1; i != -1; i--) {
+			if (inputtext[i] == '%') {
+				inputtext[i] = '#';
 			}
 		}
 
