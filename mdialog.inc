@@ -266,7 +266,6 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == MDIALOG_DIALOG_ID) {
-		
 		if (inputtext[0] == '\0') {
 			if (Dialog_IsOpen(playerid)) {
 				return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, "\1");
