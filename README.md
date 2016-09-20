@@ -37,17 +37,17 @@ If MDIALOG_ZLANG_MODE is defined then some mdialog functions take a new view.
 
 #### Open dialog
 ```Pawn
-Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, va_args<>)
+Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, {Float, _}:...);
 ```
 
 #### Show message dialog
 ```Pawn
-Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIALOG_NOTVAR_NONE, va_args<>)
+Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIALOG_NOTVAR_NONE, {Float, _}:...);
 ```
 
 #### Show message dialog with custom response callback
 ```Pawn
-Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, va_args<>)
+Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, {Float, _}:...);
 ```
 
 #### Bit flags for **notvar_flags**
