@@ -16,6 +16,44 @@
 */
 
 // external defines
+#if !defined MDIALOG_DIALOG_ID
+	#define MDIALOG_DIALOG_ID 32700
+#endif
+
+#if !defined MAX_FUNCTION_NAME
+	#define MAX_FUNCTION_NAME 32
+#endif
+
+#if defined MDIALOG_ZLANG_MODE
+	#if !defined MDIALOG_MAX_CAPTION_SIZE
+		#define MDIALOG_MAX_CAPTION_SIZE 64
+	#endif
+
+	#if !defined MDIALOG_MAX_INFO_SIZE
+		#define MDIALOG_MAX_INFO_SIZE 2048
+	#endif
+
+	#if !defined MDIALOG_MAX_BUTTON_SIZE
+		#define MDIALOG_MAX_BUTTON_SIZE 16
+	#endif
+
+	#if MDIALOG_MAX_CAPTION_SIZE > MAX_LANG_VALUE_STRING
+		#undef MDIALOG_MAX_CAPTION_SIZE
+		#define MDIALOG_MAX_CAPTION_SIZE MAX_LANG_VALUE_STRING
+	#endif
+
+	#if MDIALOG_MAX_INFO_SIZE > MAX_LANG_MVALUE_STRING
+		#undef MDIALOG_MAX_INFO_SIZE
+		#define MDIALOG_MAX_INFO_SIZE MAX_LANG_MVALUE_STRING
+	#endif
+
+	#if MDIALOG_MAX_BUTTON_SIZE > MAX_LANG_VALUE_STRING
+		#undef MDIALOG_MAX_BUTTON_SIZE
+		#define MDIALOG_MAX_BUTTON_SIZE MAX_LANG_VALUE_STRING
+	#endif
+#endif
+
+// internal defines
 #define DialogCreate:%0(%1) \
 	forward dcr_%0(%1); \
 	public dcr_%0(%1)
@@ -25,15 +63,6 @@
 	public dre_%0(%1)
 
 #define Dialog: #
-
-// internal defines
-#if !defined MDIALOG_DIALOG_ID
-	#define MDIALOG_DIALOG_ID 32700
-#endif
-
-#if !defined MAX_FUNCTION_NAME
-	#define MAX_FUNCTION_NAME 32
-#endif
 
 /*
 	Enums
@@ -74,10 +103,10 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 {
 	static
 		Lang:lang,
-		temp_caption[MAX_LANG_VALUE_STRING],
-		temp_button1[MAX_LANG_VALUE_STRING],
-		temp_button2[MAX_LANG_VALUE_STRING],
-		temp_info[MAX_LANG_MVALUE_STRING];
+		temp_caption[MDIALOG_MAX_CAPTION_SIZE],
+		temp_button1[MDIALOG_MAX_BUTTON_SIZE],
+		temp_button2[MDIALOG_MAX_BUTTON_SIZE],
+		temp_info[MDIALOG_MAX_INFO_SIZE];
 
 	lang = Lang_GetPlayerLang(playerid);
 
@@ -162,9 +191,9 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 {
 	static
 		Lang:lang,
-		temp_caption[MAX_LANG_VALUE_STRING],
-		temp_button1[MAX_LANG_VALUE_STRING],
-		temp_info[MAX_LANG_MVALUE_STRING];
+		temp_caption[MDIALOG_MAX_CAPTION_SIZE],
+		temp_button1[MDIALOG_MAX_BUTTON_SIZE],
+		temp_info[MDIALOG_MAX_INFO_SIZE];
 
 	lang = Lang_GetPlayerLang(playerid);
 
@@ -211,10 +240,10 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 {
 	static
 		Lang:lang,
-		temp_caption[MAX_LANG_VALUE_STRING],
-		temp_button1[MAX_LANG_VALUE_STRING],
-		temp_button2[MAX_LANG_VALUE_STRING],
-		temp_info[MAX_LANG_MVALUE_STRING];
+		temp_caption[MDIALOG_MAX_CAPTION_SIZE],
+		temp_button1[MDIALOG_MAX_BUTTON_SIZE],
+		temp_button2[MDIALOG_MAX_BUTTON_SIZE],
+		temp_info[MDIALOG_MAX_INFO_SIZE];
 
 	lang = Lang_GetPlayerLang(playerid);
 
@@ -271,7 +300,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, "\1");
 			}
 			return 0;
-		} 
+		}
 
 		for (new i = strlen(inputtext) - 1; i != -1; i--) {
 			if (inputtext[i] == '%') {
