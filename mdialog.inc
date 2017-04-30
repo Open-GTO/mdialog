@@ -297,6 +297,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	if (dialogid == MDIALOG_DIALOG_ID) {
 		if (inputtext[0] == '\0') {
 			if (Dialog_IsOpen(playerid)) {
+				gIsDialogOpen{playerid} = false;
 				return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, "\1");
 			}
 			return 0;
@@ -309,6 +310,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		}
 
 		if (Dialog_IsOpen(playerid)) {
+			gIsDialogOpen{playerid} = false;
 			return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, inputtext);
 		}
 		return 0;
