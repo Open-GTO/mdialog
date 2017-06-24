@@ -83,7 +83,7 @@ enum (<<= 1) {
 
 static
 	bool:gIsDialogOpen[MAX_PLAYERS char],
-	gDialogFunction[MAX_PLAYERS][(MAX_FUNCTION_NAME - 4) char];
+	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME char];
 
 /*
 	Dialog_Open
