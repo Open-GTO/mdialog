@@ -99,7 +99,7 @@ static stock _Dialog_Open(playerid, function[], style, caption[], info[], button
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, va_args<>)
+stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, lang_args<>)
 {
 	static
 		Lang:lang,
@@ -137,7 +137,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 	}
 
 	if (numargs() > 8) {
-		va_format(temp_info, sizeof(temp_info), temp_info, va_start<8>);
+		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<8>);
 	}
 	return _Dialog_Open(playerid, function, style, temp_caption, temp_info, temp_button1, temp_button2);
 }
@@ -187,7 +187,7 @@ stock Dialog_Show(playerid, function[])
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIALOG_NOTVAR_NONE, va_args<>)
+stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIALOG_NOTVAR_NONE, lang_args<>)
 {
 	static
 		Lang:lang,
@@ -216,7 +216,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 	}
 
 	if (numargs() > 5) {
-		va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
+		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<5>);
 	}
 	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, "");
 }
@@ -236,7 +236,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[])
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, va_args<>)
+stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, lang_args<>)
 {
 	static
 		Lang:lang,
@@ -274,7 +274,7 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 	}
 
 	if (numargs() > 5) {
-		va_format(temp_info, sizeof(temp_info), temp_info, va_start<7>);
+		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<7>);
 	}
 	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, temp_button2);
 }
