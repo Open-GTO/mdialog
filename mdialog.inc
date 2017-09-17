@@ -692,7 +692,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		// get line size
 		line_sizes[lines_count] = 0;
 
-		for (i = prev_sep_pos + 1; i <= prev_sep_pos + length; i++) {
+		for (i = prev_sep_pos; i <= prev_sep_pos + length; i++) {
 			if (result_info[i] == '{') {
 				i += 7;
 				continue;
