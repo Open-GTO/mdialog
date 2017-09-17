@@ -24,15 +24,23 @@
 	#define MAX_FUNCTION_NAME 32
 #endif
 
+#if !defined MDIALOG_MAX_LINES
+	#define MDIALOG_MAX_LINES 100
+#endif
+
+#if !defined MDIALOG_MAX_SPACES
+	#define MDIALOG_MAX_SPACES 200
+#endif
+
+#if !defined MDIALOG_MAX_CAPTION_SIZE
+	#define MDIALOG_MAX_CAPTION_SIZE 64
+#endif
+
+#if !defined MDIALOG_MAX_INFO_SIZE
+	#define MDIALOG_MAX_INFO_SIZE 4096
+#endif
+
 #if defined MDIALOG_ZLANG_MODE
-	#if !defined MDIALOG_MAX_CAPTION_SIZE
-		#define MDIALOG_MAX_CAPTION_SIZE 64
-	#endif
-
-	#if !defined MDIALOG_MAX_INFO_SIZE
-		#define MDIALOG_MAX_INFO_SIZE 2048
-	#endif
-
 	#if !defined MDIALOG_MAX_BUTTON_SIZE
 		#define MDIALOG_MAX_BUTTON_SIZE 16
 	#endif
@@ -77,13 +85,281 @@ enum (<<= 1) {
 	MDIALOG_NOTVAR_BUTTON2,
 }
 
+enum E_MDIALOG_TAG {
+	E_MDIALOG_TAG_CENTER,
+	E_MDIALOG_TAG_RIGHT,
+}
+
 /*
 	Vars
 */
 
 static
+	Float:gCharSize[256] = {
+		-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+		4.4453125, // space
+		5.328125, // !
+		7.5859375, // "
+		8.8984375, // #
+		8.8984375, // $
+		14.2265625, // %
+		11.5546875, // &
+		3.8046875, // '
+		5.328125, // (
+		5.328125, // )
+		6.2265625, // *
+		9.34375, // +
+		4.4453125, // ,
+		5.328125, // -
+		4.4453125, // .
+		4.4453125, // /
+		8.8984375, // 0
+		8.8984375, // 1
+		8.8984375, // 2
+		8.8984375, // 3
+		8.8984375, // 4
+		8.8984375, // 5
+		8.8984375, // 6
+		8.8984375, // 7
+		8.8984375, // 8
+		8.8984375, // 9
+		5.328125, // :
+		5.328125, // ;
+		9.34375, // <
+		9.34375, // =
+		9.34375, // >
+		9.7734375, // ?
+		15.6015625, // @
+		11.5546875, // A
+		11.5546875, // B
+		11.5546875, // C
+		11.5546875, // D
+		10.671875, // E
+		9.7734375, // F
+		12.4453125, // G
+		11.5546875, // H
+		4.4453125, // I
+		8.8984375, // J
+		11.5546875, // K
+		9.7734375, // L
+		13.328125, // M
+		11.5546875, // N
+		12.4453125, // O
+		10.671875, // P
+		12.4453125, // Q
+		11.5546875, // R
+		10.671875, // S
+		9.7734375, // T
+		11.5546875, // U
+		10.671875, // V
+		15.1015625, // W
+		10.671875, // X
+		10.671875, // Y
+		9.7734375, // Z
+		5.328125, // [
+		4.4453125, // backslash
+		5.328125, // ]
+		9.34375, // ^
+		8.8984375, // _
+		5.328125, // `
+		8.8984375, // a
+		9.7734375, // b
+		8.8984375, // c
+		9.7734375, // d
+		8.8984375, // e
+		5.328125, // f
+		9.7734375, // g
+		9.7734375, // h
+		4.4453125, // i
+		4.4453125, // j
+		8.8984375, // k
+		4.4453125, // l
+		14.2265625, // m
+		9.7734375, // n
+		9.7734375, // o
+		9.7734375, // p
+		9.7734375, // q
+		6.2265625, // r
+		8.8984375, // s
+		5.328125, // t
+		9.7734375, // u
+		8.8984375, // v
+		12.4453125, // w
+		8.8984375, // x
+		8.8984375, // y
+		8.0, // z
+		6.2265625, // {
+		4.4765625, // |
+		6.2265625, // }
+		9.34375, // ~
+		8.0, // 
+		14.1640625, // Ђ
+		9.0703125, // Ѓ
+		4.4453125, // ‚
+		6.6640625, // ѓ
+		8.0, // „
+		16.0, // …
+		8.8984375, // †
+		8.8984375, // ‡
+		8.8984375, // €
+		16.0, // ‰
+		17.5, // Љ
+		5.328125, // ‹
+		17.0, // Њ
+		9.765625, // Ќ
+		14.0, // Ћ
+		11.5, // Џ
+		9.7734375, // ђ
+		4.4453125, // ‘
+		4.4453125, // ’
+		8.0, // “
+		8.0, // ”
+		5.6015625, // •
+		8.8984375, // –
+		16.0, // —
+		16.0, // ™
+		15.5, // љ
+		5.328125, // ›
+		14.5, // њ
+		8.0078125, // ќ
+		9.7734375, // ћ
+		9.6640625, // џ
+		4.4453125, //  
+		9.953125, // Ў
+		8.8984375, // ў
+		8.8984375, // Ј
+		8.8984375, // ¤
+		7.7890625, // Ґ
+		4.4765625, // ¦
+		8.8984375, // §
+		-1.0,
+		10.703125, // Ё
+		11.7890625, // ©
+		11.3828125, // Є
+		8.8984375, // «
+		9.34375, // ¬
+		0.0, // ­
+		11.7890625, // ®
+		4.4140625, // Ї
+		6.3984375, // °
+		8.78125, // ±
+		4.4453125, // І
+		4.4453125, // і
+		7.1484375, // ґ
+		9.21875, // µ
+		8.8984375, // ¶
+		5.328125, // ·
+		8.8984375, // ё
+		17.8359375, // №
+		8.8359375, // є
+		8.8984375, // »
+		4.4453125, // ј
+		10.671875, // Ѕ
+		8.8984375, // ѕ
+		4.5, // ї
+		11.5546875, // А
+		11.5, // Б
+		11.5546875, // В
+		9.0703125, // Г
+		11.3984375, // Д
+		10.671875, // Е
+		14.4609375, // Ж
+		10.0234375, // З
+		11.5, // И
+		11.5, // Й
+		9.765625, // К
+		11.2265625, // Л
+		13.328125, // М
+		11.5546875, // Н
+		12.4453125, // О
+		11.5, // П
+		10.671875, // Р
+		11.5546875, // С
+		9.7734375, // Т
+		9.953125, // У
+		13.65625, // Ф
+		10.671875, // Х
+		11.6875, // Ц
+		11.2421875, // Ч
+		16.078125, // Ш
+		16.3046875, // Щ
+		13.9140625, // Ъ
+		15.6640625, // Ы
+		11.5, // Ь
+		11.3828125, // Э
+		16.5, // Ю
+		11.5, // Я
+		8.8984375, // а
+		9.8828125, // б
+		9.8359375, // в
+		6.6640625, // г
+		10.15625, // д
+		8.8984375, // е
+		11.34375, // ж
+		7.953125, // з
+		9.8359375, // и
+		9.8359375, // й
+		8.0078125, // к
+		10.1640625, // л
+		11.8359375, // м
+		9.6640625, // н
+		9.7734375, // о
+		9.6640625, // п
+		9.7734375, // р
+		8.8984375, // с
+		7.8359375, // т
+		8.8984375, // у
+		14.0, // ф
+		8.8984375, // х
+		9.8359375, // ц
+		9.2890625, // ч
+		13.3359375, // ш
+		13.5, // щ
+		11.6640625, // ъ
+		13.6640625, // ы
+		9.8359375, // ь
+		8.8359375, // э
+		13.6640625, // ю
+		9.3359375 // я
+	};
+
+static
+	gTag[E_MDIALOG_TAG][] = {
+		"\\c",
+		"\\r"
+	};
+
+static
+	gTagLength[E_MDIALOG_TAG],
 	bool:gIsDialogOpen[MAX_PLAYERS char],
 	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME char];
+
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
+{
+	for (new tag = 0; tag < sizeof(gTag); tag++) {
+		gTagLength[E_MDIALOG_TAG:tag] = strlen(gTag[E_MDIALOG_TAG:tag]);
+	}
+
+	#if defined MDialog_OnGameModeInit
+		return MDialog_OnGameModeInit();
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+
+#define OnGameModeInit MDialog_OnGameModeInit
+#if defined MDialog_OnGameModeInit
+	forward MDialog_OnGameModeInit();
+#endif
 
 /*
 	Dialog_Open
@@ -94,6 +370,15 @@ static stock _Dialog_Open(playerid, function[], style, caption[], info[], button
 	gIsDialogOpen{playerid} = true;
 	gDialogFunction[playerid] = !"dre_";
 	strcat(gDialogFunction[playerid], function, sizeof(gDialogFunction[]));
+
+	switch (style) {
+		case DIALOG_STYLE_MSGBOX, DIALOG_STYLE_INPUT, DIALOG_STYLE_PASSWORD: {
+			static info_result[MDIALOG_MAX_INFO_SIZE];
+			_MDialog_ProcessTags(info, info_result);
+			return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info_result, button1, button2);
+		}
+	}
+
 	return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
 }
 
@@ -113,26 +398,26 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
 		Lang_GetText(lang, caption, temp_caption);
 	} else {
-		_MDIALOG_strcpy(temp_caption, caption);
+		_MDialog_strcpy(temp_caption, caption);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
 		Lang_GetText(lang, info, temp_info);
 	} else {
-		_MDIALOG_strcpy(temp_info, info);
+		_MDialog_strcpy(temp_info, info);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
 		Lang_GetText(lang, button1, temp_button1);
 	} else {
-		_MDIALOG_strcpy(temp_button1, button1);
+		_MDialog_strcpy(temp_button1, button1);
 	}
 
 	if (!isnull(button2)) {
 		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
 			Lang_GetText(lang, button2, temp_button2);
 		} else {
-			_MDIALOG_strcpy(temp_button2, button2);
+			_MDialog_strcpy(temp_button2, button2);
 		}
 	}
 
@@ -200,19 +485,19 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
 		Lang_GetText(lang, caption, temp_caption);
 	} else {
-		_MDIALOG_strcpy(temp_caption, caption);
+		_MDialog_strcpy(temp_caption, caption);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
 		Lang_GetText(lang, info, temp_info);
 	} else {
-		_MDIALOG_strcpy(temp_info, info);
+		_MDialog_strcpy(temp_info, info);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
 		Lang_GetText(lang, button1, temp_button1);
 	} else {
-		_MDIALOG_strcpy(temp_button1, button1);
+		_MDialog_strcpy(temp_button1, button1);
 	}
 
 	if (numargs() > 5) {
@@ -250,26 +535,26 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
 		Lang_GetText(lang, caption, temp_caption);
 	} else {
-		_MDIALOG_strcpy(temp_caption, caption);
+		_MDialog_strcpy(temp_caption, caption);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
 		Lang_GetText(lang, info, temp_info);
 	} else {
-		_MDIALOG_strcpy(temp_info, info);
+		_MDialog_strcpy(temp_info, info);
 	}
 
 	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
 		Lang_GetText(lang, button1, temp_button1);
 	} else {
-		_MDIALOG_strcpy(temp_button1, button1);
+		_MDialog_strcpy(temp_button1, button1);
 	}
 
 	if (!isnull(button2)) {
 		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
 			Lang_GetText(lang, button2, temp_button2);
 		} else {
-			_MDIALOG_strcpy(temp_button2, button2);
+			_MDialog_strcpy(temp_button2, button2);
 		}
 	}
 
@@ -316,8 +601,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		return 0;
 	}
 
-	#if defined MDIALOG_OnDialogResponse
-		return MDIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+	#if defined MDialog_OnDialogResponse
+		return MDialog_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 	#else
 		return 0;
 	#endif
@@ -328,16 +613,148 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	#define _ALS_OnDialogResponse
 #endif
 
-#define OnDialogResponse MDIALOG_OnDialogResponse
-#if defined MDIALOG_OnDialogResponse
-	forward MDIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
+#define OnDialogResponse MDialog_OnDialogResponse
+#if defined MDialog_OnDialogResponse
+	forward MDialog_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
 #endif
+
+/*
+	_MDialog_ProcessTags
+*/
+
+static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeof(result_info))
+{
+	new
+		line_lengths[MDIALOG_MAX_LINES],
+		Float:line_sizes[MDIALOG_MAX_LINES],
+		line_pos[MDIALOG_MAX_LINES],
+		sep_pos,
+		prev_sep_pos,
+		tag,
+		tag_pos,
+		tag_length,
+		tag_line[MDIALOG_MAX_LINES] = {-1, ...},
+		lines_count,
+		length,
+		Float:max_size,
+		Float:min_size = 200.0,
+		i,
+		Float:temp_size;
+	
+	// copy string
+	_MDialog_strcpy(result_info, info, size_info);
+
+	// get biggest line and save line sizes
+	while (sep_pos >= 0) {
+		// get line length
+		sep_pos = strfind(result_info, "\n", false, prev_sep_pos + 1);
+		if (sep_pos == -1) {
+			length = strlen(result_info) - prev_sep_pos - 1;
+		} else {
+			length = sep_pos - prev_sep_pos - _:(lines_count != 0);
+			line_pos[lines_count + 1] = sep_pos + 1;
+		}
+
+		// check for tag
+		for (tag = 0; tag < sizeof(gTag); tag++) {
+			tag_pos = strfind(result_info, gTag[E_MDIALOG_TAG:tag], false, line_pos[lines_count] - 1);
+			
+			// if tag exists
+			if (tag_pos != -1 && (sep_pos == -1 || tag_pos < line_pos[lines_count + 1])) {
+				tag_line[lines_count] = tag;
+
+				// remove the tag
+				tag_length = gTagLength[E_MDIALOG_TAG:tag];
+
+				strdel(result_info, tag_pos, tag_pos + tag_length);
+				length -= tag_length;
+				sep_pos -= tag_length;
+				line_pos[lines_count + 1] -= tag_length;
+
+				break;
+			}
+		}
+
+		// remember length
+		line_lengths[lines_count] = length;
+
+		// get line size
+		for (i = prev_sep_pos + 1; i <= prev_sep_pos + length; i++) {
+			temp_size = gCharSize[ result_info[i] ];
+			if (temp_size != -1) {
+				line_sizes[lines_count] += temp_size;
+			}
+		}
+
+		// update max size
+		temp_size = line_sizes[lines_count];
+		if (temp_size > max_size) {
+			max_size = temp_size;
+		}
+
+		// save separator position for the future
+		prev_sep_pos = sep_pos;
+
+		// check for array borders
+		lines_count++;
+		if (lines_count >= MDIALOG_MAX_LINES) {
+			break;
+		}
+	}
+
+	if (max_size < min_size) {
+		max_size = min_size;
+	}
+
+	// add spaces to the string
+	new
+		spaces_string[MDIALOG_MAX_SPACES],
+		spaces,
+		j;
+	
+	for (i = 0; i < lines_count; i++) {
+		if (tag_line[i] == -1) {
+			continue;
+		}
+
+		// get spaces count by tag
+		switch (tag_line[i]) {
+			case E_MDIALOG_TAG_CENTER: {
+				spaces = floatround((max_size - line_sizes[i]) / 2.0 / gCharSize[' ']);
+			}
+			case E_MDIALOG_TAG_RIGHT: {
+				spaces = floatround((max_size - line_sizes[i]) / gCharSize[' ']);
+			}
+		}
+
+		// is spaces are needed
+		if (spaces == 0) {
+			continue;
+		}
+
+		// make spaces string
+		for (j = 0; j <= spaces; j++) {
+			spaces_string[j] = ' ';
+		}
+
+		spaces_string[spaces + 1] = '\0';
+		line_sizes[i] += spaces * gCharSize[' '];
+
+		// insert spaces into the string
+		format(result_info, size_info, "%.*s%s%s", line_pos[i], result_info, spaces_string, result_info[ line_pos[i] ]);
+
+		// update line positions
+		for (j = i + 1; j < lines_count; j++) {
+			line_pos[j] += spaces + 1;
+		}
+	}
+}
 
 /*
 	Other functions
 */
 
-static stock _MDIALOG_strcpy(result[], source[], const size = sizeof(result))
+static stock _MDialog_strcpy(result[], source[], const size = sizeof(result))
 {
 	result[0] = 0;
 	return strcat(result, source, size);

@@ -60,6 +60,16 @@ MDIALOG_NOTVAR_BUTTON1
 MDIALOG_NOTVAR_BUTTON2
 ```
 
+# Tags support
+You can use tags for markup your dialogs:
+
+Tag | Description
+----|-----------
+\\\c | Centers the text
+\\\r | Aligns the text to the right
+
+![tags example](https://user-images.githubusercontent.com/1020099/30522188-aac33382-9bd4-11e7-9d78-92b240309931.png)
+
 # Usage
 You can use `DialogCreate:` and `DialogResponse:` prefixes:
 ```Pawn
