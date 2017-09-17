@@ -32,6 +32,10 @@
 	#define MDIALOG_MAX_SPACES 200
 #endif
 
+#if !defined MDIALOG_MIN_DIALOG_WIDTH
+	#define MDIALOG_MIN_DIALOG_WIDTH 200.0
+#endif
+
 #if !defined MDIALOG_MAX_CAPTION_SIZE
 	#define MDIALOG_MAX_CAPTION_SIZE 64
 #endif
@@ -624,7 +628,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeof(result_info))
 {
-	new
+	static
 		line_lengths[MDIALOG_MAX_LINES],
 		Float:line_sizes[MDIALOG_MAX_LINES],
 		line_pos[MDIALOG_MAX_LINES],
@@ -633,16 +637,21 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		tag,
 		tag_pos,
 		tag_length,
-		tag_line[MDIALOG_MAX_LINES] = {-1, ...},
+		tag_line[MDIALOG_MAX_LINES],
 		lines_count,
 		length,
 		Float:max_size,
-		Float:min_size = 200.0,
 		i,
 		Float:temp_size;
 	
 	// copy string
 	_MDialog_strcpy(result_info, info, size_info);
+
+	// reset variables
+	lines_count = 0;
+	sep_pos = 0;
+	prev_sep_pos = 0;
+	max_size = 0.0;
 
 	// get biggest line and save line sizes
 	while (sep_pos >= 0) {
@@ -656,6 +665,8 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		}
 
 		// check for tag
+		tag_line[lines_count] = -1;
+
 		for (tag = 0; tag < sizeof(gTag); tag++) {
 			tag_pos = strfind(result_info, gTag[E_MDIALOG_TAG:tag], false, line_pos[lines_count] - 1);
 			
@@ -679,7 +690,14 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		line_lengths[lines_count] = length;
 
 		// get line size
+		line_sizes[lines_count] = 0;
+
 		for (i = prev_sep_pos + 1; i <= prev_sep_pos + length; i++) {
+			if (result_info[i] == '{') {
+				i += 7;
+				continue;
+			}
+
 			temp_size = gCharSize[ result_info[i] ];
 			if (temp_size != -1) {
 				line_sizes[lines_count] += temp_size;
@@ -702,12 +720,12 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		}
 	}
 
-	if (max_size < min_size) {
-		max_size = min_size;
+	if (max_size < MDIALOG_MIN_DIALOG_WIDTH) {
+		max_size = MDIALOG_MIN_DIALOG_WIDTH;
 	}
 
 	// add spaces to the string
-	new
+	static
 		spaces_string[MDIALOG_MAX_SPACES],
 		spaces,
 		j;
