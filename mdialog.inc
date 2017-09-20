@@ -626,7 +626,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	_MDialog_ProcessTags
 */
 
-static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeof(result_info))
+static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(result_info))
 {
 	static
 		line_lengths[MDIALOG_MAX_LINES],
@@ -645,7 +645,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		Float:temp_size;
 	
 	// copy string
-	_MDialog_strcpy(result_info, info, size_info);
+	_MDialog_strcpy(result_info, info, size);
 
 	// reset variables
 	lines_count = 0;
@@ -668,7 +668,12 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		tag_line[lines_count] = -1;
 
 		for (tag = 0; tag < sizeof(gTag); tag++) {
-			tag_pos = strfind(result_info, gTag[E_MDIALOG_TAG:tag], false, line_pos[lines_count] - 1);
+			tag_pos = line_pos[lines_count] - 1;
+			if (tag_pos < 0) {
+				tag_pos = 0;
+			}
+
+			tag_pos = strfind(result_info, gTag[E_MDIALOG_TAG:tag], false, tag_pos);
 			
 			// if tag exists
 			if (tag_pos != -1 && (sep_pos == -1 || tag_pos < line_pos[lines_count + 1])) {
@@ -759,7 +764,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size_info = sizeo
 		line_sizes[i] += spaces * gCharSize[' '];
 
 		// insert spaces into the string
-		format(result_info, size_info, "%.*s%s%s", line_pos[i], result_info, spaces_string, result_info[ line_pos[i] ]);
+		format(result_info, size, "%.*s%s%s", line_pos[i], result_info, spaces_string, result_info[ line_pos[i] ]);
 
 		// update line positions
 		for (j = i + 1; j < lines_count; j++) {
