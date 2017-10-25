@@ -65,6 +65,11 @@
 	#endif
 #endif
 
+#if !defined isnull
+	#define isnull(%1) \
+				((!(%1[0])) || (((%1[0]) == '\1') && (!(%1[1]))))
+#endif
+
 // internal defines
 #define DialogCreate:%0(%1) \
 	forward dcr_%0(%1); \
@@ -782,3 +787,23 @@ static stock _MDialog_strcpy(result[], source[], const size = sizeof(result))
 	result[0] = 0;
 	return strcat(result, source, size);
 }
+
+/*
+	strlen
+*/
+
+stock MDialog_strlen(string[])
+{
+	if (isnull(string)) {
+		return 0;
+	}
+
+	return strlen(string);
+}
+#if defined _ALS_strlen
+	#undef strlen
+#else
+	#define _ALS_strlen
+#endif
+
+#define strlen MDialog_strlen
