@@ -649,8 +649,12 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(res
 		i,
 		Float:temp_size;
 	
-	// copy string
-	_MDialog_strcpy(result_info, info, size);
+	// if string is packed
+	if (info{0} != 0) {
+		strunpack(result_info, info, size);
+	} else {
+		_MDialog_strcpy(result_info, info, size);
+	}
 
 	// reset variables
 	lines_count = 0;
