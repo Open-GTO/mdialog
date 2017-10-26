@@ -792,7 +792,7 @@ static stock _MDialog_strcpy(result[], source[], const size = sizeof(result))
 	strlen
 */
 
-stock MDialog_strlen(string[])
+stock MDialog_strlen(const string[])
 {
 	if (isnull(string)) {
 		return 0;
