@@ -85,15 +85,6 @@
 	Enums
 */
 
-enum (<<= 1) {
-	MDIALOG_NOTVAR_ALL = -1,
-	MDIALOG_NOTVAR_NONE = 0,
-	MDIALOG_NOTVAR_CAPTION = 1,
-	MDIALOG_NOTVAR_INFO,
-	MDIALOG_NOTVAR_BUTTON1,
-	MDIALOG_NOTVAR_BUTTON2,
-}
-
 enum E_MDIALOG_TAG {
 	E_MDIALOG_TAG_CENTER,
 	E_MDIALOG_TAG_RIGHT,
@@ -393,7 +384,7 @@ static stock _Dialog_Open(playerid, function[], style, caption[], info[], button
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, lang_args<>)
+stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], lang_args<>)
 {
 	static
 		Lang:lang,
@@ -404,35 +395,18 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 
 	lang = Lang_GetPlayerLang(playerid);
 
-	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
-		Lang_GetText(lang, caption, temp_caption);
-	} else {
-		_MDialog_strcpy(temp_caption, caption);
-	}
-
-	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
-		Lang_GetText(lang, info, temp_info);
-	} else {
-		_MDialog_strcpy(temp_info, info);
-	}
-
-	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
-		Lang_GetText(lang, button1, temp_button1);
-	} else {
-		_MDialog_strcpy(temp_button1, button1);
-	}
+	Lang_GetText(lang, caption, temp_caption);
+	Lang_GetText(lang, info, temp_info);
+	Lang_GetText(lang, button1, temp_button1);
 
 	if (!isnull(button2)) {
-		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
-			Lang_GetText(lang, button2, temp_button2);
-		} else {
-			_MDialog_strcpy(temp_button2, button2);
-		}
+		Lang_GetText(lang, button2, temp_button2);
 	}
 
 	if (numargs() > 8) {
 		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<8>);
 	}
+
 	return _Dialog_Open(playerid, function, style, temp_caption, temp_info, temp_button1, temp_button2);
 }
 
@@ -481,7 +455,7 @@ stock Dialog_Show(playerid, function[])
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIALOG_NOTVAR_NONE, lang_args<>)
+stock Dialog_Message(playerid, caption[], info[], button1[], lang_args<>)
 {
 	static
 		Lang:lang,
@@ -491,27 +465,14 @@ stock Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIA
 
 	lang = Lang_GetPlayerLang(playerid);
 
-	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
-		Lang_GetText(lang, caption, temp_caption);
-	} else {
-		_MDialog_strcpy(temp_caption, caption);
-	}
-
-	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
-		Lang_GetText(lang, info, temp_info);
-	} else {
-		_MDialog_strcpy(temp_info, info);
-	}
-
-	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
-		Lang_GetText(lang, button1, temp_button1);
-	} else {
-		_MDialog_strcpy(temp_button1, button1);
-	}
+	Lang_GetText(lang, caption, temp_caption);
+	Lang_GetText(lang, info, temp_info);
+	Lang_GetText(lang, button1, temp_button1);
 
 	if (numargs() > 5) {
 		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<5>);
 	}
+
 	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, "");
 }
 
@@ -530,7 +491,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[])
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, lang_args<>)
+stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], lang_args<>)
 {
 	static
 		Lang:lang,
@@ -541,35 +502,18 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 
 	lang = Lang_GetPlayerLang(playerid);
 
-	if (!(notvar_flags & MDIALOG_NOTVAR_CAPTION)) {
-		Lang_GetText(lang, caption, temp_caption);
-	} else {
-		_MDialog_strcpy(temp_caption, caption);
-	}
-
-	if (!(notvar_flags & MDIALOG_NOTVAR_INFO)) {
-		Lang_GetText(lang, info, temp_info);
-	} else {
-		_MDialog_strcpy(temp_info, info);
-	}
-
-	if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON1)) {
-		Lang_GetText(lang, button1, temp_button1);
-	} else {
-		_MDialog_strcpy(temp_button1, button1);
-	}
+	Lang_GetText(lang, caption, temp_caption);
+	Lang_GetText(lang, info, temp_info);
+	Lang_GetText(lang, button1, temp_button1);
 
 	if (!isnull(button2)) {
-		if (!(notvar_flags & MDIALOG_NOTVAR_BUTTON2)) {
-			Lang_GetText(lang, button2, temp_button2);
-		} else {
-			_MDialog_strcpy(temp_button2, button2);
-		}
+		Lang_GetText(lang, button2, temp_button2);
 	}
 
 	if (numargs() > 5) {
 		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<7>);
 	}
+
 	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, temp_button2);
 }
 
