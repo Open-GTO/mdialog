@@ -37,27 +37,17 @@ If MDIALOG_ZLANG_MODE is defined then some mdialog functions take a new view.
 
 #### Open dialog
 ```Pawn
-Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, {Float, _}:...);
+Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], {Float, _}:...);
 ```
 
 #### Show message dialog
 ```Pawn
-Dialog_Message(playerid, caption[], info[], button1[], notvar_flags = MDIALOG_NOTVAR_NONE, {Float, _}:...);
+Dialog_Message(playerid, caption[], info[], button1[], {Float, _}:...);
 ```
 
 #### Show message dialog with custom response callback
 ```Pawn
-Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], notvar_flags = MDIALOG_NOTVAR_NONE, {Float, _}:...);
-```
-
-#### Bit flags for **notvar_flags**
-```
-MDIALOG_NOTVAR_ALL
-MDIALOG_NOTVAR_NONE
-MDIALOG_NOTVAR_CAPTION
-MDIALOG_NOTVAR_INFO
-MDIALOG_NOTVAR_BUTTON1
-MDIALOG_NOTVAR_BUTTON2
+Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], {Float, _}:...);
 ```
 
 # Tags support
@@ -105,7 +95,6 @@ DialogCreate:test(playerid)
 	            "Hello",
 	            "LANG_ARE_YOU_OK",
 	            "Yes", "BUTTON_NO",
-	            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_BUTTON1,
 	            playerid);
 }
 
