@@ -403,8 +403,8 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 		Lang_GetText(lang, button2, temp_button2);
 	}
 
-	if (numargs() > 8) {
-		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<8>);
+	if (numargs() > 7) {
+		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<7>);
 	}
 
 	return _Dialog_Open(playerid, function, style, temp_caption, temp_info, temp_button1, temp_button2);
@@ -469,8 +469,8 @@ stock Dialog_Message(playerid, caption[], info[], button1[], lang_args<>)
 	Lang_GetText(lang, info, temp_info);
 	Lang_GetText(lang, button1, temp_button1);
 
-	if (numargs() > 5) {
-		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<5>);
+	if (numargs() > 4) {
+		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<4>);
 	}
 
 	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, "");
@@ -510,8 +510,8 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 		Lang_GetText(lang, button2, temp_button2);
 	}
 
-	if (numargs() > 5) {
-		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<7>);
+	if (numargs() > 6) {
+		Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<6>);
 	}
 
 	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, temp_caption, temp_info, temp_button1, temp_button2);
