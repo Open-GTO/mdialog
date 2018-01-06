@@ -394,6 +394,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 		temp_info[MDIALOG_MAX_INFO_SIZE];
 
 	lang = Lang_GetPlayerLang(playerid);
+	temp_button2[0] = '\0';
 
 	Lang_GetText(lang, caption, temp_caption);
 	Lang_GetText(lang, info, temp_info);
@@ -501,6 +502,7 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 		temp_info[MDIALOG_MAX_INFO_SIZE];
 
 	lang = Lang_GetPlayerLang(playerid);
+	temp_button2[0] = '\0';
 
 	Lang_GetText(lang, caption, temp_caption);
 	Lang_GetText(lang, info, temp_info);
