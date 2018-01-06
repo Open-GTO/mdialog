@@ -401,9 +401,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 
 	if (!isnull(button2)) {
 		Lang_GetText(lang, button2, temp_button2);
-	}
-	else
-	{
+	} else {
 		temp_button2[0] = '\0';
 	}
 
@@ -512,9 +510,7 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 
 	if (!isnull(button2)) {
 		Lang_GetText(lang, button2, temp_button2);
-	}
-	else
-	{
+	} else {
 		temp_button2[0] = '\0';
 	}
 
