@@ -1,7 +1,10 @@
 {
+	"user": "Open-GTO",
+	"repo": "mdialog",
 	"entry": "test.pwn",
 	"output": "test.amx",
 	"dependencies": [
-		"sampctl/samp-stdlib"
+		"sampctl/samp-stdlib",
+		"Open-GTO/zlang"
 	]
 }

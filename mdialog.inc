@@ -365,7 +365,7 @@ public OnGameModeInit()
 	Dialog_Open
 */
 
-static stock _Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
+static stock _Dialog_Open(playerid, const function[], style, const caption[], const info[], const button1[], const button2[])
 {
 	gIsDialogOpen{playerid} = true;
 	gDialogFunction[playerid] = !"dre_";
@@ -384,7 +384,7 @@ static stock _Dialog_Open(playerid, function[], style, caption[], info[], button
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], lang_args<>)
+stock Dialog_Open(playerid, const function[], style, const caption[], const info[], const button1[], const button2[], lang_args<>)
 {
 	static
 		Lang:lang,
@@ -414,7 +414,7 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 
 #else
 
-stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[])
+stock Dialog_Open(playerid, const function[], style, const caption[], const info[], const button1[], const button2[])
 {
 	return _Dialog_Open(playerid, function, style, caption, info, button1, button2);
 }
@@ -444,7 +444,7 @@ stock Dialog_IsOpen(playerid)
 	Dialog_Show
 */
 
-stock Dialog_Show(playerid, function[])
+stock Dialog_Show(playerid, const function[])
 {
 	new call_func[MAX_FUNCTION_NAME char] = !"dcr_";
 	strcat(call_func, function);
@@ -457,7 +457,7 @@ stock Dialog_Show(playerid, function[])
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_Message(playerid, caption[], info[], button1[], lang_args<>)
+stock Dialog_Message(playerid, const caption[], const info[], const button1[], lang_args<>)
 {
 	static
 		Lang:lang,
@@ -480,7 +480,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[], lang_args<>)
 
 #else
 
-stock Dialog_Message(playerid, caption[], info[], button1[])
+stock Dialog_Message(playerid, const caption[], const info[], const button1[])
 {
 	return _Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
 }
@@ -493,7 +493,7 @@ stock Dialog_Message(playerid, caption[], info[], button1[])
 
 #if defined MDIALOG_ZLANG_MODE
 
-stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], lang_args<>)
+stock Dialog_MessageEx(playerid, const response[], const caption[], const info[], const button1[], const button2[], lang_args<>)
 {
 	static
 		Lang:lang,
@@ -523,7 +523,7 @@ stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], butto
 
 #else
 
-stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[])
+stock Dialog_MessageEx(playerid, const response[], const caption[], const info[], const button1[], const button2[])
 {
 	return _Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
 }
@@ -579,7 +579,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	_MDialog_ProcessTags
 */
 
-static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(result_info))
+static stock _MDialog_ProcessTags(const info[], result_info[], const size = sizeof(result_info))
 {
 	static
 		line_lengths[MDIALOG_MAX_LINES],
@@ -596,7 +596,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(res
 		Float:max_size,
 		i,
 		Float:temp_size;
-	
+
 	// if string is packed
 	if (info{0} != 0) {
 		strunpack(result_info, info, size);
@@ -631,7 +631,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(res
 			}
 
 			tag_pos = strfind(result_info, gTag[E_MDIALOG_TAG:tag], false, tag_pos);
-			
+
 			// if tag exists
 			if (tag_pos != -1 && (sep_pos == -1 || tag_pos < line_pos[lines_count + 1])) {
 				tag_line[lines_count] = tag;
@@ -691,7 +691,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(res
 		spaces_string[MDIALOG_MAX_SPACES],
 		spaces,
 		j;
-	
+
 	for (i = 0; i < lines_count; i++) {
 		if (tag_line[i] == -1) {
 			continue;
@@ -734,7 +734,7 @@ static stock _MDialog_ProcessTags(info[], result_info[], const size = sizeof(res
 	Other functions
 */
 
-static stock _MDialog_strcpy(result[], source[], const size = sizeof(result))
+static stock _MDialog_strcpy(result[], const source[], const size = sizeof(result))
 {
 	result[0] = 0;
 	return strcat(result, source, size);
