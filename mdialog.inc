@@ -80,7 +80,7 @@
 	#endif
 
 	#define ShowPlayerDialog MDialog_ShowPlayerDialog
-	
+
 	#if defined MDIALOG_FIX_CLEAR
 		#undef MDIALOG_FIX_CLEAR
 		#undef FIX_const
@@ -247,7 +247,7 @@ static
 		8.0078125, // ќ
 		9.7734375, // ћ
 		9.6640625, // џ
-		4.4453125, //  
+		4.4453125, //
 		9.953125, // Ў
 		8.8984375, // ў
 		8.8984375, // Ј
@@ -363,13 +363,13 @@ static
 	OnGameModeInit
 */
 
+#if !defined MDIALOG_DISABLE_TAGS
+
 public OnGameModeInit()
 {
-#if !defined MDIALOG_DISABLE_TAGS
 	for (new tag = 0; tag < sizeof(gTag); tag++) {
 		gTagLength[E_MDIALOG_TAG:tag] = strlen(gTag[E_MDIALOG_TAG:tag]);
 	}
-#endif
 
 	#if defined MDialog_OnGameModeInit
 		return MDialog_OnGameModeInit();
@@ -386,6 +386,8 @@ public OnGameModeInit()
 #define OnGameModeInit MDialog_OnGameModeInit
 #if defined MDialog_OnGameModeInit
 	forward MDialog_OnGameModeInit();
+#endif
+
 #endif
 
 /*
