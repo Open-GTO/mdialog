@@ -65,6 +65,28 @@
 	#endif
 #endif
 
+#if !defined FIX_const
+	#define FIX_const 0
+	#define MDIALOG_FIX_CLEAR
+#endif
+
+#if !FIX_const
+	native MDialog_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[]) = ShowPlayerDialog;
+
+	#if defined _ALS_ShowPlayerDialog
+		#undef ShowPlayerDialog
+	#else
+		#define _ALS_ShowPlayerDialog
+	#endif
+
+	#define ShowPlayerDialog MDialog_ShowPlayerDialog
+	
+	#if defined MDIALOG_FIX_CLEAR
+		#undef MDIALOG_FIX_CLEAR
+		#undef FIX_const
+	#endif
+#endif
+
 #if !defined isnull
 	#define isnull(%1) \
 				((!(%1[0])) || (((%1[0]) == '\1') && (!(%1[1]))))
@@ -94,6 +116,7 @@ enum E_MDIALOG_TAG {
 	Vars
 */
 
+#if !defined MDIALOG_DISABLE_TAGS
 static
 	Float:gCharSize[256] = {
 		-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
@@ -327,10 +350,12 @@ static
 	gTag[E_MDIALOG_TAG][] = {
 		"\\c",
 		"\\r"
-	};
+	},
+	gTagLength[E_MDIALOG_TAG];
+
+#endif
 
 static
-	gTagLength[E_MDIALOG_TAG],
 	bool:gIsDialogOpen[MAX_PLAYERS char],
 	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME char];
 
@@ -340,9 +365,11 @@ static
 
 public OnGameModeInit()
 {
+#if !defined MDIALOG_DISABLE_TAGS
 	for (new tag = 0; tag < sizeof(gTag); tag++) {
 		gTagLength[E_MDIALOG_TAG:tag] = strlen(gTag[E_MDIALOG_TAG:tag]);
 	}
+#endif
 
 	#if defined MDialog_OnGameModeInit
 		return MDialog_OnGameModeInit();
@@ -373,9 +400,13 @@ static stock _Dialog_Open(playerid, const function[], style, const caption[], co
 
 	switch (style) {
 		case DIALOG_STYLE_MSGBOX, DIALOG_STYLE_INPUT, DIALOG_STYLE_PASSWORD: {
-			static info_result[MDIALOG_MAX_INFO_SIZE];
-			_MDialog_ProcessTags(info, info_result);
-			return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info_result, button1, button2);
+			#if defined MDIALOG_DISABLE_TAGS
+				return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info, button1, button2);
+			#else
+				static info_result[MDIALOG_MAX_INFO_SIZE];
+				_MDialog_ProcessTags(info, info_result);
+				return ShowPlayerDialog(playerid, MDIALOG_DIALOG_ID, style, caption, info_result, button1, button2);
+			#endif
 		}
 	}
 
@@ -578,6 +609,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 /*
 	_MDialog_ProcessTags
 */
+#if !defined MDIALOG_DISABLE_TAGS
 
 static stock _MDialog_ProcessTags(const info[], result_info[], const size = sizeof(result_info))
 {
@@ -729,6 +761,8 @@ static stock _MDialog_ProcessTags(const info[], result_info[], const size = size
 		}
 	}
 }
+
+#endif
 
 /*
 	Other functions

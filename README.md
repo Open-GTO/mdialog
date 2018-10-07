@@ -60,6 +60,8 @@ Tag | Description
 
 ![tags example](https://user-images.githubusercontent.com/1020099/30522188-aac33382-9bd4-11e7-9d78-92b240309931.png)
 
+You also can disable tags with definition of `MDIALOG_DISABLE_TAGS` before `mdialog` including. This can be useful if you are not interested in this feature and wants a little bit more performance.
+
 # Usage
 You can use `DialogCreate:` and `DialogResponse:` prefixes:
 ```Pawn
