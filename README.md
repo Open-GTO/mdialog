@@ -12,14 +12,9 @@ Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[]
 Dialog_Close(playerid);
 ```
 
-#### Check on opening any dialog
+#### Check on opening dialog by name or any (if function is empty)
 ```Pawn
-Dialog_IsAnyOpen(playerid);
-```
-
-#### Check on opening dialog by name
-```Pawn
-Dialog_IsOpen(playerid, function[]);
+Dialog_IsOpen(playerid, function[] = "");
 ```
 
 #### Show dialog by name

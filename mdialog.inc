@@ -357,7 +357,7 @@ static
 
 static
 	bool:gIsDialogOpen[MAX_PLAYERS char],
-	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME char];
+	gDialogFunction[MAX_PLAYERS][MAX_FUNCTION_NAME];
 
 /*
 	OnGameModeInit
@@ -397,7 +397,7 @@ public OnGameModeInit()
 static stock _Dialog_Open(playerid, const function[], style, const caption[], const info[], const button1[], const button2[])
 {
 	gIsDialogOpen{playerid} = true;
-	gDialogFunction[playerid] = !"dre_";
+	gDialogFunction[playerid] = "dre_";
 	strcat(gDialogFunction[playerid], function, sizeof(gDialogFunction[]));
 
 	switch (style) {
@@ -468,23 +468,17 @@ stock Dialog_Close(playerid)
 	Dialog_IsOpen
 */
 
-stock Dialog_IsOpen(playerid)
+stock Dialog_IsOpen(playerid, function[] = "")
 {
-	static lDialogFunction[MAX_FUNCTION_NAME char];
-	lDialogFunction = !"";
-	strmid(lDialogFunction, gDialogFunction[playerid], 4, strlen(gDialogFunction[playerid]), MAX_FUNCTION_NAME);
-	if(!strcmp(lDialogFunction, function) && gIsDialogOpen{playerid})
+	if (isnull(function)) {
 		return _:gIsDialogOpen{playerid};
-	return -1;
-}
+	}
 
-/*
-	Dialog_IsAnyOpen
-*/
+	if (strcmp(gDialogFunction[playerid][4], function) == 0 && gIsDialogOpen{playerid}) {
+		return 1;
+	}
 
-stock Dialog_IsAnyOpen(playerid)
-{
-	return _:gIsDialogOpen{playerid};
+	return 0;
 }
 
 /*
@@ -585,7 +579,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == MDIALOG_DIALOG_ID) {
 		if (inputtext[0] == '\0') {
-			if (Dialog_IsAnyOpen(playerid)) {
+			if (Dialog_IsOpen(playerid)) {
 				gIsDialogOpen{playerid} = false;
 				return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, "\1");
 			}
@@ -598,7 +592,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			}
 		}
 
-		if (Dialog_IsAnyOpen(playerid)) {
+		if (Dialog_IsOpen(playerid)) {
 			gIsDialogOpen{playerid} = false;
 			return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, inputtext);
 		}
