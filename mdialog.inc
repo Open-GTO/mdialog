@@ -474,7 +474,7 @@ stock Dialog_IsOpen(playerid, function[] = "")
 		return _:gIsDialogOpen{playerid};
 	}
 
-	if (strcmp(gDialogFunction[playerid][4], function) == 0 && gIsDialogOpen{playerid}) {
+	if (!isnull(gDialogFunction[playerid]) && strcmp(gDialogFunction[playerid][4], function) == 0 && gIsDialogOpen{playerid}) {
 		return 1;
 	}
 
