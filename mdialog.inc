@@ -468,7 +468,7 @@ stock Dialog_Close(playerid)
 	Dialog_IsOpen
 */
 
-stock Dialog_IsOpen(playerid, function[] = "")
+stock Dialog_IsOpen(playerid, const function[] = "")
 {
 	if (isnull(function)) {
 		return _:gIsDialogOpen{playerid};
