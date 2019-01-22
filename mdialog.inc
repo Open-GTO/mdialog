@@ -470,6 +470,20 @@ stock Dialog_Close(playerid)
 
 stock Dialog_IsOpen(playerid)
 {
+	static lDialogFunction[MAX_FUNCTION_NAME char];
+	lDialogFunction = !"";
+	strmid(lDialogFunction, gDialogFunction[playerid], 4, strlen(gDialogFunction[playerid]), MAX_FUNCTION_NAME);
+	if(!strcmp(lDialogFunction, function) && gIsDialogOpen{playerid})
+		return _:gIsDialogOpen{playerid};
+	return -1;
+}
+
+/*
+	Dialog_IsAnyOpen
+*/
+
+stock Dialog_IsAnyOpen(playerid)
+{
 	return _:gIsDialogOpen{playerid};
 }
 
@@ -571,7 +585,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == MDIALOG_DIALOG_ID) {
 		if (inputtext[0] == '\0') {
-			if (Dialog_IsOpen(playerid)) {
+			if (Dialog_IsAnyOpen(playerid)) {
 				gIsDialogOpen{playerid} = false;
 				return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, "\1");
 			}
@@ -584,7 +598,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			}
 		}
 
-		if (Dialog_IsOpen(playerid)) {
+		if (Dialog_IsAnyOpen(playerid)) {
 			gIsDialogOpen{playerid} = false;
 			return CallLocalFunction(gDialogFunction[playerid], "ddds", playerid, response, listitem, inputtext);
 		}
