@@ -4,32 +4,37 @@ Modern dialog system.
 # Functions
 #### Open dialog
 ```Pawn
-Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[]);
+Dialog_Open(playerid, const function[], style, const caption[], const info[], const button1[], const button2[]);
 ```
 
 #### Close dialog
 ```Pawn
-Dialog_Close(playerid);
+Dialog_Close(playerid, const function[] = "", showDialog = true);
+```
+
+#### Get name of the current dialog
+```Pawn
+Dialog_GetCurrent(playerid, function[], const size = sizeof(function))
 ```
 
 #### Check on opening dialog by name or any (if function is empty)
 ```Pawn
-Dialog_IsOpen(playerid, function[] = "");
+Dialog_IsOpen(playerid, const function[] = "");
 ```
 
 #### Show dialog by name
 ```Pawn
-Dialog_Show(playerid, function[]);
+Dialog_Show(playerid, const function[]);
 ```
 
 #### Show message dialog
 ```Pawn
-Dialog_Message(playerid, caption[], info[], button1[]);
+Dialog_Message(playerid, const caption[], const info[], const button1[]);
 ```
 
 #### Show message dialog with custom response callback
 ```Pawn
-Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[]);
+Dialog_MessageEx(playerid, const response[], const caption[], const info[], const button1[], const button2[]);
 ```
 
 # [zlang](https://github.com/Open-GTO/zlang) support
@@ -37,17 +42,17 @@ If MDIALOG_ZLANG_MODE is defined then some mdialog functions take a new view.
 
 #### Open dialog
 ```Pawn
-Dialog_Open(playerid, function[], style, caption[], info[], button1[], button2[], {Float, _}:...);
+Dialog_Open(playerid, const function[], style, const caption[], const info[], const button1[], const button2[], {Float, _}:...);
 ```
 
 #### Show message dialog
 ```Pawn
-Dialog_Message(playerid, caption[], info[], button1[], {Float, _}:...);
+Dialog_Message(playerid, const caption[], const info[], const button1[], {Float, _}:...);
 ```
 
 #### Show message dialog with custom response callback
 ```Pawn
-Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[], {Float, _}:...);
+Dialog_MessageEx(playerid, const response[], const caption[], const info[], const button1[], const button2[], {Float, _}:...);
 ```
 
 # Tags support
@@ -63,7 +68,7 @@ Tag | Description
 You also can disable tags with definition of `MDIALOG_DISABLE_TAGS` before `mdialog` including. This can be useful if you are not interested in this feature and wants a little bit more performance.
 
 # Usage
-You can use `DialogCreate:` and `DialogResponse:` prefixes:
+You can use `DialogCreate:`, `DialogResponse:` and `DialogInterrupt:` prefixes:
 ```Pawn
 DialogCreate:test(playerid)
 {
@@ -82,6 +87,12 @@ DialogResponse:test(playerid, response, listitem, inputtext[])
 	}
 
 	SendClientMessage(playerid, -1, "Welcome to the club");
+	return 1;
+}
+
+DialogInterrupt:test(playerid)
+{
+	SendClientMessage(playerid, -1, "Dialog \"test\" was closed by Dialog_Close or by opening other dialog");
 	return 1;
 }
 ```
