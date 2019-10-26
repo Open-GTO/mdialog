@@ -71,7 +71,7 @@
 #endif
 
 #if !FIX_const
-	native MDialog_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[]) = ShowPlayerDialog;
+	native MDialogFix_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[]) = ShowPlayerDialog;
 
 	#if defined _ALS_ShowPlayerDialog
 		#undef ShowPlayerDialog
@@ -79,7 +79,7 @@
 		#define _ALS_ShowPlayerDialog
 	#endif
 
-	#define ShowPlayerDialog MDialog_ShowPlayerDialog
+	#define ShowPlayerDialog MDialogFix_ShowPlayerDialog
 
 	#if defined MDIALOG_FIX_CLEAR
 		#undef MDIALOG_FIX_CLEAR
@@ -638,7 +638,7 @@ stock Dialog_MessageEx(playerid, const response[], const caption[], const info[]
 	OnDialogResponse
 */
 
-public OnDialogResponse(playerid, dialogid, response, listitem, const inputtext[])
+public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	static temp[128];
 	_MDialog_strcpy(temp, inputtext);
@@ -679,7 +679,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, const inputtext[
 
 #define OnDialogResponse MDialog_OnDialogResponse
 #if defined MDialog_OnDialogResponse
-	forward MDialog_OnDialogResponse(playerid, dialogid, response, listitem, const inputtext[]);
+	forward MDialog_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
 #endif
 
 /*
