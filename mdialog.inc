@@ -806,7 +806,7 @@ static stock _MDialog_ProcessTags(const info[], result_info[], const size = size
 		}
 
 		// get spaces count by tag
-		switch (tag_line[i]) {
+		switch (E_MDIALOG_TAG:tag_line[i]) {
 			case E_MDIALOG_TAG_CENTER: {
 				spaces = floatround((max_size - line_sizes[i]) / 2.0 / gCharSize[' ']);
 			}
