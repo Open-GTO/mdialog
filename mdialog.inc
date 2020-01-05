@@ -112,9 +112,10 @@
 */
 
 enum E_MDIALOG_TAG {
+	E_MDIALOG_TAG_NONE = -1,
 	E_MDIALOG_TAG_CENTER,
 	E_MDIALOG_TAG_RIGHT,
-}
+};
 
 /*
 	Vars
@@ -695,10 +696,10 @@ static stock _MDialog_ProcessTags(const info[], result_info[], const size = size
 		line_pos[MDIALOG_MAX_LINES],
 		sep_pos,
 		prev_sep_pos,
-		tag,
+		E_MDIALOG_TAG:tag,
 		tag_pos,
 		tag_length,
-		tag_line[MDIALOG_MAX_LINES],
+		E_MDIALOG_TAG:tag_line[MDIALOG_MAX_LINES],
 		lines_count,
 		length,
 		Float:max_size,
@@ -730,22 +731,22 @@ static stock _MDialog_ProcessTags(const info[], result_info[], const size = size
 		}
 
 		// check for tag
-		tag_line[lines_count] = -1;
+		tag_line[lines_count] = E_MDIALOG_TAG_NONE;
 
-		for (tag = 0; tag < sizeof(gTag); tag++) {
+		for (tag = E_MDIALOG_TAG:0; tag < E_MDIALOG_TAG; tag++) {
 			tag_pos = line_pos[lines_count] - 1;
 			if (tag_pos < 0) {
 				tag_pos = 0;
 			}
 
-			tag_pos = strfind(result_info, gTag[E_MDIALOG_TAG:tag], false, tag_pos);
+			tag_pos = strfind(result_info, gTag[tag], false, tag_pos);
 
 			// if tag exists
 			if (tag_pos != -1 && (sep_pos == -1 || tag_pos < line_pos[lines_count + 1])) {
 				tag_line[lines_count] = tag;
 
 				// remove the tag
-				tag_length = gTagLength[E_MDIALOG_TAG:tag];
+				tag_length = gTagLength[tag];
 
 				strdel(result_info, tag_pos, tag_pos + tag_length);
 				length -= tag_length;
@@ -801,7 +802,7 @@ static stock _MDialog_ProcessTags(const info[], result_info[], const size = size
 		j;
 
 	for (i = 0; i < lines_count; i++) {
-		if (tag_line[i] == -1) {
+		if (tag_line[i] == E_MDIALOG_TAG_NONE) {
 			continue;
 		}
 
