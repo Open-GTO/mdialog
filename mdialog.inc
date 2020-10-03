@@ -498,7 +498,7 @@ stock Dialog_Close(playerid, const function[] = "", showDialog = true)
 	Dialog_Interrupt(playerid, function);
 
 	if (showDialog) {
-		return ShowPlayerDialog(playerid, -1, DIALOG_STYLE_MSGBOX, " ", " ", " ", "");
+		return MDialogFix_ShowPlayerDialog(playerid, -1, DIALOG_STYLE_MSGBOX, " ", " ", " ", "");
 	}
 
 	return 1;
