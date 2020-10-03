@@ -802,12 +802,11 @@ static stock _MDialog_ProcessTags(const info[], result_info[], const size = size
 		j;
 
 	for (i = 0; i < lines_count; i++) {
-		if (tag_line[i] == E_MDIALOG_TAG_NONE) {
-			continue;
-		}
-
 		// get spaces count by tag
 		switch (tag_line[i]) {
+			case E_MDIALOG_TAG_NONE: {
+				continue;
+			}
 			case E_MDIALOG_TAG_CENTER: {
 				spaces = floatround((max_size - line_sizes[i]) / 2.0 / gCharSize[' ']);
 			}
