@@ -70,9 +70,9 @@
 	#define MDIALOG_FIX_CLEAR
 #endif
 
-#if !FIX_const
-	native MDialogFix_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[]) = ShowPlayerDialog;
+native MDialogFix_ShowPlayerDialog(playerid, dialogid, style, const caption[], const info[], const button1[], const button2[]) = ShowPlayerDialog;
 
+#if !FIX_const
 	#if defined _ALS_ShowPlayerDialog
 		#undef ShowPlayerDialog
 	#else
